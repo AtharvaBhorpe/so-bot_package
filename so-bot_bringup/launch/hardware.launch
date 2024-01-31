@@ -1,0 +1,5 @@
+<launch>
+	<include file="$(find so-bot_bringup)/launch/serial.launch"/>
+	<include file="$(find rplidar_ros)/launch/rplidar.launch"/>
+	<!-- <include file="$(find rbot_navigation)/launch/laserscan_angle_bounds_filter.launch"/> -->
+</launch>

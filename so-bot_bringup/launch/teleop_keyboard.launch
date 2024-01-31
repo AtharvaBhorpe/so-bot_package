@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="so-bot_teleop" type="teleop_keyboard.py" name="teleop_keyboard" output="screen">
+    <param name="speed" value="0.2"/>
+    <param name="turn" value="0.4"/>
+    <param name="key_timeout" value="1.0"/>
+  </node>
+</launch>

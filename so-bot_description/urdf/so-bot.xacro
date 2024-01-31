@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+<robot name="so-bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find so-bot_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find so-bot_description)/urdf/so-bot.trans" />
+<xacro:include filename="$(find so-bot_description)/urdf/so-bot.gazebo" />
+
+<link name="base_footprint">
+</link>
+
+<link name="base_link">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-0.009415181625694446 -0.01252488656098026 0.07211323295424353"/>
+    <mass value="9.819715617393246"/>
+    <inertia ixx="0.152354" ixy="-0.009929" ixz="0.01309" iyy="0.150609" iyz="0.005399" izz="0.25307"/>
+  </inertial>
+  <visual>
+    <origin rpy="1.5708 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://so-bot_description/meshes/base_link.dae" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://so-bot_description/meshes/base_link.dae" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="rplidar_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-0.012087386915837032 0.0005244813396256937 -0.01860827730917819"/>
+    <mass value="0.5711298883839366"/>
+    <inertia ixx="0.000247" ixy="-5e-06" ixz="-5.1e-05" iyy="0.000481" iyz="-3e-06" izz="0.000562"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 3.14159" xyz="-2.3e-05 -0.000132 -0.204"/>
+    <geometry>
+      <mesh filename="package://so-bot_description/meshes/rplidar_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-2.3e-05 -0.000132 -0.204"/>
+    <geometry>
+      <mesh filename="package://so-bot_description/meshes/rplidar_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="t265">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <mass value="0.5711298883839366"/>
+    <inertia ixx="0.000247" ixy="-5e-06" ixz="-5.1e-05" iyy="0.000481" iyz="-3e-06" izz="0.000562"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <geometry>
+      <mesh filename="package://so-bot_description/meshes/t265.dae" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <!-- <material name="black"/> -->
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <geometry>
+      <mesh filename="package://so-bot_description/meshes/t265.dae" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="d435i_link">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <mass value="0.5711298883839366"/>
+    <inertia ixx="0.000247" ixy="-5e-06" ixz="-5.1e-05" iyy="0.000481" iyz="-3e-06" izz="0.000562"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <geometry>
+      <mesh filename="package://so-bot_description/meshes/d435i.dae" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <!-- <material name="black"/> -->
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    <geometry>
+      <mesh filename="package://so-bot_description/meshes/d435i.dae" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="rplidar_joint" type="fixed">
+  <origin rpy="0 0 3.14159" xyz="0.12 0.000132 0.30"/>
+  <parent link="base_link"/>
+  <child link="rplidar_1"/>
+</joint>
+
+<joint name="t265_joint" type="fixed">
+  <origin rpy="0 0 0" xyz="0.16 0.000132 0.21"/>
+  <parent link="base_link"/>
+  <child link="t265"/>
+</joint>
+
+<joint name="d435i_joint" type="fixed">
+  <origin rpy="0 0 0" xyz="0.16 0.000132 0.24"/>
+  <parent link="base_link"/>
+  <child link="d435i_link"/>
+</joint>
+
+<joint name="base_footprint_j" type="fixed">
+  <origin rpy="0 0 0" xyz="0 0 0.024"/>
+  <parent link="base_footprint"/>
+  <child link="base_link"/>
+</joint>
+
+
+
+</robot>

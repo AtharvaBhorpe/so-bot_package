@@ -1,0 +1,97 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="map_file" default="$(find so-bot_navigation)/maps/3dplm.yaml"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="false"/>
+  
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!-- AMCL -->
+  <include file="$(find so-bot_navigation)/launch/amcl.launch"/>
+
+  <!-- move_base -->
+  <include file="$(find so-bot_navigation)/launch/move_base_teb.launch">
+  </include>
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)">  
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find so-bot_navigation)/rviz/teb.rviz"/>
+          <arg default="true" name="gui"/>
+          <param command="$(find xacro)/xacro $(find so-bot_description)/urdf/so-bot.xacro" name="robot_description"/>
+          <param name="use_gui" value="$(arg gui)"/>
+          <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+          <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+          <param name="publish_frequency" value="8" />
+          </node>
+  </group>
+
+  <!--node pkg="tf" type="static_transform_publisher" name="top_camera_broadcaster"
+      args="-1.7 -4.0 6.5 -1.5708 -1.1 0.0 0.0 map rviz_cam_top 10" /-->
+  <!--node name="top_camera_info" pkg="rostopic" type="rostopic"
+      args="pub top_camera_info sensor_msgs/CameraInfo
+     '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'rviz_cam_top'},
+      height: 720, width: 1280, distortion_model: 'plumb_bob',
+      D: [0],
+      K: [600.0, 0.0, 640, 0.0, 600.0, 360.0, 0.0, 0.0, 1.0],
+      R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+      P: [600.0, 0.0, 640, 0.0, 0.0, 600, 360, 0.0, 0.0, 0.0, 1.0, 0.0],
+      binning_x: 0, binning_y: 0,
+      roi: {x_offset: 0, y_offset: 0, height: 720, width: 1280, do_rectify: false}}' -r 2"
+      output="screen"/-->
+
+  <!--node pkg="tf" type="static_transform_publisher" name="perception_camera_broadcaster"
+                args="-0.8 0 1 1.57 3.14 1.1 base_footprint rviz_cam_perception 10" />
+        <node name="perception_camera_info" pkg="rostopic" type="rostopic"
+                args="pub perception_camera_info sensor_msgs/CameraInfo
+                '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'rviz_cam_perception'},
+                height: 720, width: 1280, distortion_model: 'plumb_bob',
+                D: [0],
+                K: [600.0, 0.0, 640, 0.0, 600.0, 360.0, 0.0, 0.0, 1.0],
+                R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+                P: [600.0, 0.0, 640, 0.0, 0.0, 600, 360, 0.0, 0.0, 0.0, 1.0, 0.0],
+                binning_x: 0, binning_y: 0,
+                roi: {x_offset: 0, y_offset: 0, height: 720, width: 1280, do_rectify: false}}' -r 2"
+                output="screen"/-->
+              
+              <!--<node pkg="tf" type="static_transform_publisher" name="front_camera_broadcaster"
+                args="0.175 0.0 0.15 0 0 0 1 base_footprint rviz_cam_front 10" />-->
+         <!--node name="front_camera_info" pkg="rostopic" type="rostopic"
+                args="pub front_camera_info sensor_msgs/CameraInfo
+                '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'rviz_cam_front'},
+                height: 720, width: 1280, distortion_model: 'plumb_bob',
+                D: [0],
+                K: [600.0, 0.0, 640, 0.0, 600.0, 360.0, 0.0, 0.0, 1.0],
+                R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
+                P: [600.0, 0.0, 640, 0.0, 0.0, 600, 360, 0.0, 0.0, 0.0, 1.0, 0.0],
+                binning_x: 0, binning_y: 0,
+                roi: {x_offset: 0, y_offset: 0, height: 720, width: 1280, do_rectify: false}}' -r 2"
+                output="screen"/--> 
+  <!-- <node
+    pkg="image_transport"
+    type="republish"
+    name="republish_image"
+    output="screen"
+    args="raw in:=/camera1/image
+          compressed out:=/camera1/compressed/image"/> -->
+
+  <!-- <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <arg name="port" value="9090" />
+    </include> -->
+
+<include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+   <!-- <include file="$(find delta_viz_server)/launch/compressed_images.launch" />-->
+
+   <!-- <node pkg="cv_camera" type="cv_camera_node" name="cv_camera" output="screen">
+  <param name="device_path" value="/dev/video1" />
+  <param name="frame_id" value="rviz_cam_front" />
+  <remap from="/cv_camera/image_raw" to="front_camera/image" />
+</node>-->
+
+<!-- <node pkg="tf" type="static_transform_publisher" name="map_to_camera_odom_broadcaster" args="0 0 0 0 0 0 map t265_odom_frame 100"/> -->
+
+
+<!-- <node name="web_video_server" pkg="web_video_server" type="web_video_server" output="screen"/> -->
+</launch>
