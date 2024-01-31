@@ -1,2 +1,2 @@
 # so-bot_package
-ROS package and documentation for Small Omni-Bot [SO-Bot]
+ROS1 (Noetic) package and documentation for Small Omni-Bot [SO-Bot]
